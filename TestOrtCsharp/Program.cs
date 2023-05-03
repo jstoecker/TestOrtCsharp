@@ -69,12 +69,9 @@ public class Program
         //bool useFp16 = args.Length > 0 && args[0] == "fp16";
         bool useFp16 = true;
 
-        int[] shape = { 3 };
-        //var aBuffer = new float[] { 0.12341f, 0.32f, -0.05f };
-        //var bBuffer = new float[] { 0.05124f, -0.12f, -0.0345f };
-
-        var aBuffer = new float[] { 1, 3, 11};
-        var bBuffer = new float[] { 2, -1, -5 };
+        int[] shape = { 6 };
+        var aBuffer = new float[] { 0.12341f, 0.32f, -0.05f, 1, 3, 11 };
+        var bBuffer = new float[] { 0.05124f, -0.12f, -0.0345f, 2, -1, -5 };
 
         if (useFp16)
         {
@@ -84,8 +81,6 @@ public class Program
             {
                 aTensor[i] = BitConverter.HalfToUInt16Bits((Half)aBuffer[i]);
                 bTensor[i] = BitConverter.HalfToUInt16Bits((Half)bBuffer[i]);
-                //aTensor[i] = (Float16)aBuffer[i];
-                //bTensor[i] = (Float16)bBuffer[i];
             }
 
             RunModel<Float16>(aTensor, bTensor, shape);
