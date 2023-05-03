@@ -4,10 +4,8 @@ using System.Net.Mime;
 
 public class Program
 {
-    static void PrintFp16Tensor(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> output, int[] shape)
+    static void PrintTensor(DenseTensor<Float16> tensor, int[] shape)
     {
-        var tensor = output.ToList().First().Value as DenseTensor<Float16>;
-
         for (int i = 0; i < shape[0]; i++)
         {
             var val = tensor[i].value;
@@ -16,10 +14,8 @@ public class Program
         }
     }
 
-    static void PrintFp32Tensor(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> output, int[] shape)
+    static void PrintTensor(DenseTensor<float> tensor, int[] shape)
     {
-        var tensor = output.ToList().First().Value as DenseTensor<float>;
-
         for (int i = 0; i < shape[0]; i++)
         {
             Console.WriteLine(tensor[i]);
@@ -56,19 +52,16 @@ public class Program
 
         if (useFp16)
         {
-            PrintFp16Tensor(output, shape);
+            PrintTensor(output.ToList().First().Value as DenseTensor<Float16>, shape);
         }
         else
         {
-            PrintFp32Tensor(output, shape);
+            PrintTensor(output.ToList().First().Value as DenseTensor<float>, shape);
         }
     }
 
-    static void Main(string[] args)
+    static void RunTest(bool useFp16)
     {
-        //bool useFp16 = args.Length > 0 && args[0] == "fp16";
-        bool useFp16 = true;
-
         int[] shape = { 6 };
         var aBuffer = new float[] { 0.12341f, 0.32f, -0.05f, 1, 3, 11 };
         var bBuffer = new float[] { 0.05124f, -0.12f, -0.0345f, 2, -1, -5 };
@@ -91,5 +84,13 @@ public class Program
             var bTensor = new DenseTensor<float>(bBuffer, shape);
             RunModel<float>(aTensor, bTensor, shape);
         }
+    }
+
+    static void Main(string[] args)
+    {
+        Console.WriteLine("RUN WITH FP32:");
+        RunTest(false);
+        Console.WriteLine("RUN WITH FP16:");
+        RunTest(true);
     }
 }
