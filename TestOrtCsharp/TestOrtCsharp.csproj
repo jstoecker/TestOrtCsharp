@@ -11,4 +11,13 @@
     <PackageReference Include="Microsoft.ML.OnnxRuntime.DirectML" Version="1.15.0-dev-20230502-1254-92309187b3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="models\add_fp16.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="models\add_fp32.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
